@@ -68,3 +68,4 @@ cython_debug/
 .vscode/
 
 # Other
+migrations/

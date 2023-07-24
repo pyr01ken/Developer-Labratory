@@ -14,16 +14,17 @@ class User(AbstractBaseUser):
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    username = models.CharField(max_length=100)
-    email = models.EmailField()
-    email_active_code = models.UUIDField()
-    avatar = models.ImageField(null=True, blank=True)
+    username = models.CharField(max_length=100, unique=True)
+    email = models.EmailField(unique=True)
+    email_active_code = models.UUIDField(null=True, blank=True, unique=True)
+    avatar = models.ImageField(upload_to='profiles/', null=True, blank=True)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, null=True, blank=True)
+    ip = models.GenericIPAddressField(null=True, blank=True)
 
     objects = UserManager()
 
-    USERNAME_FIELD = ''
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'username']
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
 
     # required fields
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -49,7 +50,7 @@ class User(AbstractBaseUser):
         return user_role
 
     def __str__(self):
-        return f'{self.last_name} - {self.email}'
+        return f'{self.get_fullname()} - {self.email}'
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"

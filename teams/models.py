@@ -8,22 +8,17 @@ User = get_user_model()
 class Team(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    plan = models.OneToOneField(Plan, on_delete=models.CASCADE)
-    members = models.ManyToManyField(User, through='TeamMembership')
+    leader = models.ForeignKey(User, on_delete=models.CASCADE, related_name="leader_teams")
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    members = models.ManyToManyField(User)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = "developer_laboratory_teams"
+
     def __str__(self):
         return self.name
-
-
-class TeamMembership(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_leader = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.team.name}"
 
 
 class Task(models.Model):
@@ -37,10 +32,16 @@ class Task(models.Model):
         (HIGH, 'High'),
     )
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
     description = models.TextField()
     body = models.TextField()
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="team_tasks")
     priority = models.PositiveSmallIntegerField(choices=PRIORITY_CHOICE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        db_table = "developer_laboratory_tasks"
+
+    def __str__(self):
+        return self.name
