@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'teams.apps.TeamsConfig',
     'plans.apps.PlansConfig',
+    'file_manager.apps.FileManagerConfig',
 
     # Third-party apps
     'rest_framework',
