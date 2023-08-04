@@ -22,6 +22,7 @@ api_urlpatterns = [
     path('plans/', include('plans.urls', namespace='plans')),
     path('files/', include('file_manager.urls', namespace='files')),
     path('teams/', include('teams.urls', namespace='teams')),
+    # path('projects/', include('projects.urls', namespace='projects')),
 ]
 
 urlpatterns = [

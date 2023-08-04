@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'teams.apps.TeamsConfig',
     'plans.apps.PlansConfig',
+    'projects.apps.ProjectsConfig',
     'file_manager.apps.FileManagerConfig',
 
     # Third-party apps
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
