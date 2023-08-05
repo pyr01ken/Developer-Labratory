@@ -1,6 +1,7 @@
 from django.contrib.auth import login, logout, authenticate
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpRequest
+from django.utils.crypto import get_random_string
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -28,6 +29,18 @@ class RegisterView(APIView):
             serializer.create(serializer.validated_data, request)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ActivateAccountView(APIView):
+    def get(self, request, email_active_code):
+        user = User.objects.filter(email_active_code__iexact=email_active_code).first()
+        if user is not None:
+            if not user.is_active:
+                user.is_active = True
+                user.email_active_code = get_random_string(100)
+                user.save()
+                return Response({'detail': 'user activate successfully.'}, status=status.HTTP_200_OK)
+            return Response({'detail': 'user activated has error.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(APIView):

@@ -16,7 +16,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
-    email_active_code = models.UUIDField(null=True, blank=True, unique=True)
+    email_active_code = models.CharField(max_length=100, null=True, blank=True)
     avatar = models.ImageField(upload_to='profiles/', null=True, blank=True)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, null=True, blank=True)
     ip = models.GenericIPAddressField(null=True, blank=True)

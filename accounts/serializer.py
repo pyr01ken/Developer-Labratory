@@ -1,6 +1,7 @@
+from django.utils.crypto import get_random_string
 from rest_framework import serializers
 from .models import User
-from .utils import get_client_ip
+from .utils import get_client_ip, send_email
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,8 +27,11 @@ class UserSerializer(serializers.ModelSerializer):
                 email=email,
                 role=role,
                 ip=ip,
+                email_active_code=get_random_string(100),
+                is_active=False,
             )
             user.set_password(password)
             user.save()
+            # send_email('Activate the account', user.email, {'user', user}, 'emails/activate_account.html')
             return user
 
