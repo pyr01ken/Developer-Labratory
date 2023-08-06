@@ -14,18 +14,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
 
 api_urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('plans/', include('plans.urls', namespace='plans')),
     path('files/', include('file_manager.urls', namespace='files')),
     path('teams/', include('teams.urls', namespace='teams')),
-    # path('projects/', include('projects.urls', namespace='projects')),
+    path('projects/', include('projects.urls', namespace='projects')),
 ]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(api_urlpatterns)),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

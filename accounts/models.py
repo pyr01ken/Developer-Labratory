@@ -14,9 +14,9 @@ class User(AbstractBaseUser):
 
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    username = models.CharField(max_length=100, unique=True)
+    username = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True)
-    email_active_code = models.CharField(max_length=100, null=True, blank=True)
+    email_active_code = models.CharField(max_length=100, null=True, blank=True, editable=False)
     avatar = models.ImageField(upload_to='profiles/', null=True, blank=True)
     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, null=True, blank=True)
     ip = models.GenericIPAddressField(null=True, blank=True)
@@ -24,7 +24,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'username']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     # required fields
     date_joined = models.DateTimeField(auto_now_add=True)
